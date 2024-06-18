@@ -3137,7 +3137,9 @@
     padding: 0.5rem 0.5rem;
   }
   .p-datatable.p-datatable-sm .p-datatable-thead > tr > th {
+    color: #156185;
     padding: 0.5rem 0.5rem;
+    border-bottom: 2px solid #156185;
   }
   .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td {
     padding: 0.5rem 0.5rem;
