@@ -6,8 +6,6 @@ export const environment = {
 
   production: false,
   UrlBase: 'https://desaapi.sistemaedi.com.pe/seguimiento',
-  key_ApiManagement: '',
-  secretKeyEncript: 'D1x3rIvQpWn0bA5J',
   apiEdiUrl: 'https://desaapi.sistemaedi.com.pe/webAPIEDI',
 
   SecretKeyCaptcha: '6Leu8-kjAAAAAOXQLTz5byCqlaNZmFZEQUBNL2Fx',

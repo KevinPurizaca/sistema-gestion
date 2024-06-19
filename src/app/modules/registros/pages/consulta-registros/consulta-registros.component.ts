@@ -52,8 +52,8 @@ export class ConsultaRegistrosComponent implements OnInit {
   selectedUsuarios: any;
 
 
-  iPerfilGerente:number =Perfiles.Perfil2;
-
+  iPerfilGerente:number =Perfiles.PerfilGerente;
+  bPerfilGerente:boolean = false;
 
   request ={
     idCliente: 0,
@@ -107,7 +107,10 @@ export class ConsultaRegistrosComponent implements OnInit {
   ngOnInit(): void {
     this.loadData(this.request);
 
-    this.usuario_data = JSON.parse(window.localStorage.getItem(KeysLocalStorage.InfoUsuario) || "{}")
+    this.usuario_data = JSON.parse(window.localStorage.getItem(KeysLocalStorage.InfoUsuario) || "{}");
+    if(this.usuario_data){
+      this.bPerfilGerente = this.usuario_data?.Perfiles.filter((x:any) => x.id === Perfiles.PerfilGerente || x.perfil === "GERENTE").length > 0;
+    }
   }
 
 
@@ -180,6 +183,7 @@ export class ConsultaRegistrosComponent implements OnInit {
     this.isCollapsed = event;//para cuando se usa el componente panel
   }
 
+
   
 
   showModal(item: any, caso: string) {
@@ -196,7 +200,7 @@ export class ConsultaRegistrosComponent implements OnInit {
       this.requestGuardar.comentarioGerencia = "";
       this.selectedClientes = undefined;
 
-      this.widthModal ="600px";
+      this.widthModal  ="600px";
       this.heigthModal ="550px";
       this.tituloModal ="Nuevo Registro";
 
@@ -217,8 +221,8 @@ export class ConsultaRegistrosComponent implements OnInit {
           this.selectedClientes = res.body[0];        
         }
       })
-      this.widthModal ="600px";
-      this.heigthModal ="1000px";
+      this.widthModal  ="600px";
+      this.heigthModal = this.bPerfilGerente ? "1000px" :"550px";
       this.tituloModal ="Agregar Comentario";
 
       this.bDialogRegistrarDetalle = true;
@@ -227,8 +231,8 @@ export class ConsultaRegistrosComponent implements OnInit {
 
   buscarRegistro(){
     const value = this.formBusqueda.value;
-    this.request.asunto = value.txtAsunto;
-    this.request.codigo = value.txtCodigo;
+    this.request.asunto = value.txtAsunto || "";
+    this.request.codigo = value.txtCodigo || "";
     this.request.idCliente = value.cboCliente?.id || 0;
     this.request.UsuarioRegistro = value.cboUsuario?.id|| 0;
     this.request.pagina.page = 0;
@@ -238,6 +242,7 @@ export class ConsultaRegistrosComponent implements OnInit {
     this.loadData(this.request);
   }
 
+  
   limpiar(){
     this.formBusqueda.reset();//Reseteamos el formulario
 
@@ -266,10 +271,10 @@ export class ConsultaRegistrosComponent implements OnInit {
       this.httpCoreService.get( `${ENDPOINTS.ObtenerClientes}${params.toString()}`).subscribe(res => {
         if(res.success){
           if(caso == "Filtros"){
-            this.lstClientes = res.body;        
+            this.lstClientesFiltro = res.body;        
           }
           else if(caso == "Registrar"){
-            this.lstClientesFiltro = res.body;        
+            this.lstClientes = res.body;        
           }
         }
       })

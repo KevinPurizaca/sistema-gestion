@@ -15,8 +15,7 @@ export const MSG_CRUD = {
 }
 
 export const Perfiles = {
-    Perfil1:1,
-    Perfil2:3
+    PerfilGerente:2073,
 }
 
 export const KeysLocalStorage ={

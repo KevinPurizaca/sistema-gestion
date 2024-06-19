@@ -6,19 +6,21 @@ import { AuthService } from '../services/auth.service';
 import { CommonService } from '../../../core/services/common.service';
 import { environment } from '../../../../environments/environment';
 import { KeysLocalStorage } from '../../../core/config/options';
+import { ENDPOINTS } from '../../../core/config/Endpoints';
+import { HttpCoreService } from '../../../core/services/httpCore.service';
 
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss',
-    providers: [AuthService]
+    providers: [AuthService, HttpCoreService]
 })
 
 export class LoginComponent {
-    bSubmited:boolean = false;
+    bSubmited: boolean = false;
 
-     siteKeyRecaptcha = environment.ClientKeyCaptcha;
+    siteKeyRecaptcha = environment.ClientKeyCaptcha;
 
     loading: boolean = false;
 
@@ -47,6 +49,8 @@ export class LoginComponent {
         private router: Router,
         private authService: AuthService,
         private commonService: CommonService,
+        private httpCoreService: HttpCoreService,
+
     ) {
 
     }
@@ -89,7 +93,7 @@ export class LoginComponent {
 
 
         this.isSubmitted = true;
-        this.loading =true;
+        this.loading = true;
 
         const loginValues = this.form.value;
         let paramRequest = {
@@ -98,44 +102,49 @@ export class LoginComponent {
         };
         await this.authService.loginSecurity(paramRequest, this.tokenCaptchaV2).then((res: any) => {
             if (res.TipoResultado == 1) {
-                console.log("🚀  res:", res)
-                var usuarioSession = {
-                    "Flagproveedor": res.Datos.Flagproveedor,
-                    "Flagconfiguracionpersona": res.Datos.Flagconfiguracionpersona,
-                    "Login": res.Datos.Login,
-                    "Nombre": res.NombreCompleto,
-                    "ApellidoPaterno": "",
-                    "ApellidoMaterno": "",
-                    "Email": res.Datos.Email,
-                    "NumeroDocumento": res.NumeroDocumento,
-                    "IdCliente": res.Ubicacion.IdCliente,
-                    "PermisoPorDefecto": res.PermisoPorDefecto,
-                    "IdTipoDocumento": res.IdTipoDocumento,
-                    "Telefono": res.Datos.Telefono,
-                    "Celular": res.Datos.Celular,
-                    "Id": res.Id,
-                    "FechaUltimoAcceso": res.FechaUltimoAcceso,
 
-                };
+                this.httpCoreService.get(ENDPOINTS.ObtenerPerfilUsuario + res.Id).subscribe(resPerfil => {
+                    if (resPerfil.success) {
+                        var usuarioSession = {
+                            "Flagproveedor": res.Datos.Flagproveedor,
+                            "Flagconfiguracionpersona": res.Datos.Flagconfiguracionpersona,
+                            "Login": res.Datos.Login,
+                            "Nombre": res.NombreCompleto,
+                            "ApellidoPaterno": "",
+                            "ApellidoMaterno": "",
+                            "Email": res.Datos.Email,
+                            "NumeroDocumento": res.NumeroDocumento,
+                            "IdCliente": res.Ubicacion.IdCliente,
+                            "PermisoPorDefecto": res.PermisoPorDefecto,
+                            "IdTipoDocumento": res.IdTipoDocumento,
+                            "Telefono": res.Datos.Telefono,
+                            "Celular": res.Datos.Celular,
+                            "Id": res.Id,
+                            "FechaUltimoAcceso": res.FechaUltimoAcceso,
+                            "Perfiles":resPerfil.body
+                        };
 
+                        window.localStorage.setItem(KeysLocalStorage.InfoUsuario, JSON.stringify(usuarioSession));
+                        window.localStorage.setItem(KeysLocalStorage.Token, JSON.stringify(res.token));
+                        this.loading = false;
+                        this.bSubmited = false;
+
+                        this.router.navigateByUrl("/Registros/Consulta-Registros");
+                    }
+                })
                 // var request = {
                 //     usuario: usuarioSession,
                 //     token: res.token
                 // };
 
                 // var encriptdado = this.Encryptar(JSON.stringify(request));
-                window.localStorage.setItem(KeysLocalStorage.InfoUsuario, JSON.stringify(usuarioSession));
-                window.localStorage.setItem(KeysLocalStorage.Token, JSON.stringify(res.token));
-                this.loading =false;
-                this.bSubmited = false;
 
-                this.router.navigateByUrl("/Registros/Consulta-Registros")
             } else {
                 this.commonService.HanddleWarningMessage(res.Mensaje);
                 this.IdCaptcha.reset();
             }
             this.isSubmitted = false;
-            this.loading =false;
+            this.loading = false;
 
         }, (error: any) => {
             this.IdCaptcha.reset();
@@ -144,7 +153,9 @@ export class LoginComponent {
         });
     }
 
+    loadDataPerfilUsuario() {
 
+    }
 
 
 

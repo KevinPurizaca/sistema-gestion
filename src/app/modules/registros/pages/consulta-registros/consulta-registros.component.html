@@ -22,7 +22,7 @@
             </div>
 
 
-            <div class="col-12 md:col-4">
+            <!-- <div class="col-12 md:col-4">
                 <label class="label-filter-text">Fecha Inicio</label>
                 <p-calendar [(ngModel)]="dateFechaInicio" [iconDisplay]="'input'" [showIcon]="true"
                     inputId="icondisplay" appendTo="body" dateFormat="dd/mm/yy" formControlName="cboFechaInicio" />
@@ -32,7 +32,7 @@
                 <label class="label-filter-text">Fecha Fin</label>
                 <p-calendar [(ngModel)]="dateFechaFin" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
                     appendTo="body" dateFormat="dd/mm/yy" formControlName="cboFechaFin" />
-            </div>
+            </div> -->
 
             <div class="col-12 md:col-4">
                 <label class="label-filter-text">Usuario Registra</label>
@@ -108,7 +108,7 @@
 
     <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="totalRecord"
         [rowsPerPageOptions]="rowsPageOptions" 
-        [showCurrentPageReport]="true"  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"/>
+        [showCurrentPageReport]="true"  currentPageReportTemplate="Total Registros: {totalRecords}"/>
 </p-card>
 
 
@@ -123,7 +123,7 @@
                     <label class="label-filter-text">Cliente</label>
                     <p-autoComplete [(ngModel)]="selectedClientes" [dropdown]="false" [suggestions]="lstClientes"
                      [readonly]="bEditarDetalle" [disabled]="bEditarDetalle"
-                        (completeMethod)="filtrarClientes($event,'Filtros')" minLength="1" field="cliente" appendTo="body"
+                        (completeMethod)="filtrarClientes($event,'Registrar')" minLength="1" field="cliente" appendTo="body"
                         formControlName="cboCliente" placeholder="Escribe y Seleccione Cliente" 
                         [ngClass]="{'ng-invalid ng-dirty' : bSubmited && !selectedClientes}" />
 
@@ -152,7 +152,7 @@
                         class="text-red-600">Ingrese Descripcion Detallada.</small>
                 </div>
 
-                @if(bEditarDetalle){
+                @if(bEditarDetalle && bPerfilGerente){
                     <div class="col-12 md:col-12">
                         <label class="label-filter-text">Comentario</label>
                         <textarea rows="6" cols="30" pInputTextarea formControlName="txtComentario"  [(ngModel)]="requestGuardar.comentarioGerencia" 

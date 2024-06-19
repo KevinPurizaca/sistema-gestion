@@ -1,11 +1,26 @@
 .columna-codigo{
     min-width: 9rem;
+    max-width: 9rem;  
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 .columna-carta{
     min-width: 5rem;
+    max-width: 5rem;  
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 .columna-fecha{
-    min-width: 10rem;    
+    min-width: 10rem;   
+    max-width: 10rem;  
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; 
 }
 .columna-cliente{
     min-width: 15rem; 
@@ -16,7 +31,13 @@
     overflow: hidden;
 }
 .columna-registrado{
-    min-width: 15rem;    
+    min-width: 10rem; 
+    max-width: 10rem;  
+
+    
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;   
 }
 .columna-asunto{
     min-width: 15rem;  

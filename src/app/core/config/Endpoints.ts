@@ -5,4 +5,5 @@ export const ENDPOINTS ={
     
     ObtenerClientes:"/GestionSeguimiento/ObtenerCliente?",
     ObtenerUsuarios:"/GestionSeguimiento/ObtenerUsuario?",
+    ObtenerPerfilUsuario:"/GestionSeguimiento/ObtenerUsuarioPerfil?Id=",
 }
