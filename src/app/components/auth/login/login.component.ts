@@ -4,6 +4,8 @@ import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CommonService } from '../../../core/services/common.service';
+import { environment } from '../../../../environments/environment';
+
 
 @Component({
     selector: 'app-login',
@@ -11,7 +13,10 @@ import { CommonService } from '../../../core/services/common.service';
     styleUrl: './login.component.scss',
     providers: [AuthService]
 })
+
 export class LoginComponent {
+
+     siteKeyRecaptcha = environment.SecretKeyCaptcha;
 
     loading: boolean = false;
 

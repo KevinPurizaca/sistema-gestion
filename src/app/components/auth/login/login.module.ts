@@ -29,11 +29,6 @@ import { environment } from '../../../../environments/environment';
         RecaptchaFormsModule,
     ],
     declarations: [LoginComponent],
-    providers:[{
-        provide: RECAPTCHA_SETTINGS,
-        useValue: {
-          siteKey: environment.ClientKeyCaptcha
-        } as RecaptchaSettings,
-      }]
+    providers:[]
 })
 export class LoginModule { }

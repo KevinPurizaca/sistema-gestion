@@ -33,7 +33,7 @@
   
           <div>
             <re-captcha formControlName="recaptchaReactive" name="recaptcha" [(ngModel)]="tokenRecaptcha"
-              (resolved)="resolved($event)"  #IdCaptcha
+              (resolved)="resolved($event)"  #IdCaptcha [siteKey]="siteKeyRecaptcha"
               [class.is-invalid]="form.controls['recaptchaReactive'].invalid && (form.controls['recaptchaReactive'].dirty || form.controls['recaptchaReactive'].touched)">
             </re-captcha>
             <div

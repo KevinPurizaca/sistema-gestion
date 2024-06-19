@@ -10,6 +10,7 @@ import { AppConfigModule } from './config/config.module';
 import { AppSidebarComponent } from "./app.sidebar.component";
 import { AppLayoutComponent } from "./app.layout.component";
 import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,10 @@ import { CommonModule } from '@angular/common';
         InputTextModule,
         SidebarModule,
         RouterModule,
-        AppConfigModule
+        AppConfigModule,
+        ButtonModule,
+        
+        
     ],
     exports: [AppLayoutComponent]
 })

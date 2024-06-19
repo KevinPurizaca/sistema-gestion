@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { Observable, of } from 'rxjs';
+import { AuthUtils } from '../../../core/auth.utils';
 
 
 @Injectable()
@@ -48,10 +50,50 @@ export class AuthService {
 
 
 
+  /**
+   * Sign out
+   */
+  signOut(): Observable<any> {
+    localStorage.removeItem('usuarioSession');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('listOpciones');
+
+    this._authenticated = false;
+    return of(true);
+  }
 
 
 
+  set accessToken(token: string) {
+    localStorage.setItem('accessToken', token);
+  }
 
 
+  get accessToken(): string {
+    return localStorage.getItem('accessToken') ?? '';
+  }
+  /**
+   * Check the authentication status
+   */
+  check(): Observable<boolean> {
+    // Check if the user is logged in
+    if (this._authenticated) {
+      return of(true);
+    }
 
+    // Check the access token availability
+    if (!this.accessToken) {
+      return of(false);
+    }
+
+    // Check the access token expire date
+    if (AuthUtils.isTokenExpired(this.accessToken)) {
+      return of(false);
+    }
+
+
+    return of(true);
+    //  return this.getUserDataInUsingToken();
+    // //  return this.signInUsingToken();
+  }
 }

@@ -5,6 +5,9 @@ import { routes } from './app.routes';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MessageService } from 'primeng/api';
+import { AuthService } from './components/auth/services/auth.service';
+import { RecaptchaLoaderService } from 'ng-recaptcha';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,9 +16,8 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withHashLocation()),
     MessageService,
-
+    AuthService,
+    RecaptchaLoaderService
   ],
 
 };
-
-

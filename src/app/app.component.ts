@@ -4,11 +4,12 @@ import { AppLayoutModule } from './layout/app.layout.module';
 import { AppSidebarComponent } from './layout/app.sidebar.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { isPlatformBrowser } from '@angular/common';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,AppLayoutModule],
+  imports: [RouterOutlet,AppLayoutModule,TooltipModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

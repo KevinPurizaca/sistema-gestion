@@ -1,5 +1,5 @@
 <div class="layout-topbar">
-    <a class="layout-topbar-logo" >
+    <a class="layout-topbar-logo">
         <!-- <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="logo"> -->
         <span>Seguimiento de Gestión</span>
     </a>
@@ -8,24 +8,81 @@
         <i class="pi pi-bars"></i>
     </button>
 
-    <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
+    <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button"
+        (click)="layoutService.showProfileSidebar()">
         <i class="pi pi-ellipsis-v"></i>
     </button>
 
-    <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
-        <span>Calendar</span>
-        <!-- <button class="p-link layout-topbar-button">
-            <i class="pi pi-calendar"></i>
-            <span>Calendar</span>
-        </button> -->
+    <div #topbarmenu class="layout-topbar-menu"
+        [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
 
-        <!-- <button class="p-link layout-topbar-button">
-            <i class="pi pi-user"></i>
-            <span>Profile</span>
-        </button> -->
+        <div class="data-user-logged">
+            <div class="user-logged">
+                <span class=""> {{nombreUsuario}}</span>
+                <br>
+                <span class="font-bold">{{userData?.Email}}</span>
+            </div>
+        </div>
 
-        <button class="p-link layout-topbar-button" >
-            <i class="pi pi-sign-out"></i>          
-        </button>
+
+        <button pButton type="button" icon="pi pi-user" styleClass="p-button-info"
+            style="background: #156185; border-color:#156185;margin-left: 20px;" (click)="showProfileSidebar()"></button>
+
     </div>
 </div>
+
+
+
+<p-sidebar [(visible)]="showSidebar" position="right" styleClass="layout-profile-sidebar w-full sm:w-25rem">
+    <ul class="list-data list-none m-0 p-0">
+        <li><a
+            class="flex surface-border mb-3 p-3 align-items-center border-1 surface-border border-round hover:surface-hover transition-colors transition-duration-150"><span><i
+                class="pi pi-user text-xl text-primary"></i></span>
+            <div class="ml-3"><span class="mb-2 font-semibold">Nombres</span>
+              <p class="data-user text-color-secondary m-0">{{nombreUsuario}}</p>
+            </div>
+          </a></li>
+  
+      <li><a
+          class="flex surface-border mb-3 p-3 align-items-center border-1 surface-border border-round hover:surface-hover transition-colors transition-duration-150"><span><i
+              class="pi pi-at text-xl text-primary"></i></span>
+          <div class="ml-3"><span class="mb-2 font-semibold">Usuario</span>
+            <p class="user-data text-color-secondary m-0">{{userData?.Login}}</p>
+          </div>
+        </a></li>
+
+      <li><a
+          class="flex surface-border mb-3 p-3 align-items-center border-1 surface-border border-round hover:surface-hover transition-colors transition-duration-150"><span><i
+              class="pi pi-envelope text-xl text-primary"></i></span>
+          <div class="ml-3"><span class="mb-2 font-semibold">Correo</span>
+            <p class="user-data text-color-secondary m-0">{{userData?.Email}}</p>
+          </div>
+        </a></li>
+
+      <li><a
+          class="flex surface-border mb-3 p-3 align-items-center border-1 surface-border border-round hover:surface-hover transition-colors transition-duration-150"><span><i
+              class="pi pi-phone text-xl text-primary"></i></span>
+          <div class="ml-3"><span class="mb-2 font-semibold">Teléfono</span>
+            <p class="data-user text-color-secondary m-0">{{userData?.Telefono}}</p>
+          </div>
+        </a></li>
+
+      <li><a
+          class="flex surface-border mb-3 p-3 align-items-center border-1 surface-border border-round hover:surface-hover transition-colors transition-duration-150"><span><i
+              class="pi pi-phone text-xl text-primary"></i></span>
+          <div class="ml-3"><span class="mb-2 font-semibold">Celular</span>
+            <p class="data-user text-color-secondary m-0">{{userData?.Celular}}</p>
+          </div>
+        </a></li>
+
+
+        <!-- (click)="LogOut()" -->
+      <li><a (click)="logout()"
+          class="cursor-pointer flex surface-border mb-3 p-3 align-items-center border-1 surface-border border-round hover:surface-hover transition-colors transition-duration-150"><span><i
+              class="pi pi-power-off text-xl text-purple-600"></i></span>
+          <div class="ml-3"><span class="mb-2 font-semibold text-purple-600">Cerrar sesión</span>
+            <p class="data-user text-color-secondary m-0">Salir del sistema</p>
+          </div>
+        </a></li>
+    </ul>
+  </p-sidebar>

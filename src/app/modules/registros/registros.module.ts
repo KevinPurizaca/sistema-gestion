@@ -48,7 +48,7 @@ const routes: Routes = [
     AutoCompleteModule,
     CalendarModule,
     CardModule,
-    ToastModule
+    ToastModule    
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
