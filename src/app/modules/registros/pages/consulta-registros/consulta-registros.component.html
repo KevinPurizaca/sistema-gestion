@@ -159,7 +159,7 @@
                         [ngClass]="{'ng-invalid ng-dirty' : bSubmited && !requestGuardar.comentarioGerencia}"></textarea>
     
                         <small
-                            *ngIf="bSubmited &&  formRegistro.controls['txtDescripcion'].touched"
+                            *ngIf="bSubmited && !requestGuardar.comentarioGerencia"
                             class="text-red-600">Ingrese Comentario.</small>
                     </div>
                 }
