@@ -116,17 +116,14 @@ export class ConsultaRegistrosComponent implements OnInit {
 
   mostrarmsg(){
     this.commonService.HanddleInfoMessage(MSG_CRUD.MsgActualizadaRegistrada);
-
   }
  
+  bVisualizarSeguimiento:boolean = false;
 
   visualizarSeguimiento(id:any){
-    let req ={
-
-    }
+    let req ={}
     this.httpCoreService.put(req,ENDPOINTS.VisualizarSeguimiento + id).subscribe(res => {
       if(res.success){
-        this.loadData(this.request);
       }
     })
   }
@@ -168,7 +165,10 @@ export class ConsultaRegistrosComponent implements OnInit {
       this.requestGuardar.asunto = value.txtAsunto;
       this.requestGuardar.detalle = value.txtDescripcion;
       
-
+      if(this.bPerfilGerente && this.requestGuardar.id != 0 && !this.bVisualizarSeguimiento){
+        this.visualizarSeguimiento(this.requestGuardar.id);
+      }
+      
       this.httpCoreService.post(this.requestGuardar,ENDPOINTS.RegistrarSeguimiento).subscribe(res => {
         if(res.success){
           this.request.pagina.page = 0;//Reseteamos el page
@@ -224,9 +224,7 @@ export class ConsultaRegistrosComponent implements OnInit {
       this.requestGuardar.usuarioRegistro = item.usuarioRegistro;
       this.requestGuardar.comentarioGerencia = item.comentarioGerencia;
 
-      if(this.bPerfilGerente){
-        this.visualizarSeguimiento(item.id);
-      }
+      this.bVisualizarSeguimiento = item.flgVisualizacion;
 
       this.httpCoreService.get( `${ENDPOINTS.ObtenerClientes}Cliente=${item.cliente}`).subscribe(res => {
         if(res.success){
