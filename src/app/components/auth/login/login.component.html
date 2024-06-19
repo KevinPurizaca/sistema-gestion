@@ -1,9 +1,11 @@
+<p-toast key="tst" [baseZIndex]="99999"></p-toast>
+
 <div class="auth">
     <div class="auth-form">
       <div class="auth-form__card">
         <div class="auth-form__card--logo">
           <figure class="logo">
-            <img src="assets/img/auth/logo-tgestiona.png" alt="" />
+            <img src="assets/images/auth/logo-tgestiona.png" alt="" />
           </figure>
         </div>
         <div class="auth-form__card--title">
@@ -13,48 +15,42 @@
           <input type="hidden" name="__RequestVerificationToken" [value]="this.csrfToken"
             formControlName="RequestVerificacionToken" />
   
-          <!-- <mat-form-field appearance="outline" class="w-full">
-            <mat-label>Usuario</mat-label>
-            <input matInput type="text" formControlName="usuario">
-            <mat-error *ngIf="form.controls['usuario'].hasError('required')">
-              Este campo es obligatorio
-            </mat-error>
-          </mat-form-field> -->
-  
-          <!-- <mat-form-field appearance="outline" class="w-full">
-            <mat-label>Contraseña</mat-label>
-            <input matInput type="password" formControlName="password">
-            <mat-error *ngIf="form.controls['password'].hasError('required')">
-              Este campo es obligatorio
-            </mat-error>
-          </mat-form-field> -->
-  
+            <div class=" contenedor-inputs">
+                <label class="label-filter-text">Usuario</label>
+                <input type="text" pInputText formControlName="usuario" />
+                
+                <small *ngIf="form.controls['usuario'].hasError('required')"
+                class="text-red-600">Este campo es obligatorio</small>
+            </div>
+         
+            <div class=" contenedor-inputs">
+                <label class="label-filter-text">Contraseña</label>
+                <input type="password" pInputText formControlName="password" />
+
+                <small *ngIf="form.controls['password'].hasError('required')"
+                class="text-red-600">Este campo es obligatorio</small>
+            </div> 
   
           <div>
-            <!-- <re-captcha formControlName="recaptchaReactive" name="recaptcha" [(ngModel)]="tokenRecaptcha"
+            <re-captcha formControlName="recaptchaReactive" name="recaptcha" [(ngModel)]="tokenRecaptcha"
               (resolved)="resolved($event)"  #IdCaptcha
               [class.is-invalid]="form.controls['recaptchaReactive'].invalid && (form.controls['recaptchaReactive'].dirty || form.controls['recaptchaReactive'].touched)">
-            </re-captcha> -->
+            </re-captcha>
             <div
               *ngIf="form.controls['recaptchaReactive'].invalid && (form.controls['recaptchaReactive'].dirty || form.controls['recaptchaReactive'].touched)">
-              <!-- <mat-error style="font-size: 75%;" *ngIf="form.controls['recaptchaReactive'].hasError('required')">
-                Este campo es obligatorio
-              </mat-error> -->
+
+              <small *ngIf="form.controls['recaptchaReactive'].hasError('required')"
+              class="text-red-600">Este campo es obligatorio</small>
             </div>
           </div>
-          <button (click)="login($event)" type="button" mat-raised-button class="btn btn-primary" [disabled]="isSubmitted">
-            <span class="material-symbols-outlined" *ngIf="isSubmitted">
-              <!-- <mat-spinner diameter="20"></mat-spinner> -->
-            </span>
-            Ingresar
-          </button>
+
+          <br>
+          <p-button class="w-full" label="Ingresar" [raised]="true" severity="success" size="large" (click)="login($event)" [loading]="loading"/>
+
+          <br>
           <br>
           <a (click)="recuperarRedirect()" class="form-recuperar">Recuperar contraseña</a>
-          <!--
-              <div *ngIf="error" class="alert-error mt-2">
-                  El usuario o contraseña no son correctos.
-              </div>-->
-  
+
         </div>
       </div>
     </div>
@@ -71,6 +67,7 @@
           <circle r="234" cx="790" cy="491"></circle>
         </g>
       </svg>
+
       <!-- Dots -->
       <svg class="svg-square" viewBox="0 0 220 192" width="220" height="192" fill="none">
         <defs>
@@ -82,11 +79,11 @@
         <rect width="220" height="192" fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"></rect>
       </svg>
 
-      
+
       <div class="content-text">
         <div class="content-text__text">
           <div>Sistema de</div>
-          <div>facilities - Edi</div>
+          <div>Gestión</div>
         </div>
       </div>
     </div>
