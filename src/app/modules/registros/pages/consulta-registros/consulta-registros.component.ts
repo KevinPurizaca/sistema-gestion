@@ -120,6 +120,17 @@ export class ConsultaRegistrosComponent implements OnInit {
   }
  
 
+  visualizarSeguimiento(id:any){
+    let req ={
+
+    }
+    this.httpCoreService.put(req,ENDPOINTS.VisualizarSeguimiento + id).subscribe(res => {
+      if(res.success){
+        this.loadData(this.request);
+      }
+    })
+  }
+
   loadData(req:any){
     this.loading = true;
     this.lstRegistros = [];
@@ -181,10 +192,7 @@ export class ConsultaRegistrosComponent implements OnInit {
 
   collapsedChange(event: any) {
     this.isCollapsed = event;//para cuando se usa el componente panel
-  }
-
-
-  
+  }  
 
   showModal(item: any, caso: string) {
     this.bSubmited =false;
@@ -216,6 +224,7 @@ export class ConsultaRegistrosComponent implements OnInit {
       this.requestGuardar.usuarioRegistro = item.usuarioRegistro;
       this.requestGuardar.comentarioGerencia = item.comentarioGerencia;
 
+      this.visualizarSeguimiento(item.id);
       this.httpCoreService.get( `${ENDPOINTS.ObtenerClientes}Cliente=${item.cliente}`).subscribe(res => {
         if(res.success){
           this.selectedClientes = res.body[0];        
