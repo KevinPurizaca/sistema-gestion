@@ -1,12 +1,6 @@
 <p-toast key="tst" [baseZIndex]="99999"></p-toast>
 
-
-<p-panel header="Busqueda de Registros" [toggleable]="true" (collapsedChange)="collapsedChange($event)"
-    [collapsed]="false">
-    <ng-template pTemplate="icons">
-            <p-button  *ngIf="isCollapsed"  label="Nuevo Registro" severity="secondary" icon="pi pi-plus" iconPos="right" [outlined]="true" size="small" />
-    </ng-template>
-
+<p-card header="Total de Registros">
     <form [formGroup]="formBusqueda">
         <div class="p-fluid p-formgrid grid">
 
@@ -63,11 +57,11 @@
             </div>
         </div>
     </form>
-</p-panel>
 
-<br>
+    <br>
+    <br>
+    <br>
 
-<p-panel header="Resultado de Registros" [toggleable]="false">
 
     <p-table [value]="lstRegistros" styleClass="p-datatable-sm" [loading]="loading">
         <ng-template pTemplate="header">
@@ -115,11 +109,7 @@
     <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="totalRecord"
         [rowsPerPageOptions]="rowsPageOptions" 
         [showCurrentPageReport]="true"  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"/>
-</p-panel>
-
-
-
-
+</p-card>
 
 <p-dialog header="Nuevo Registro" [modal]="true" [(visible)]="bDialogRegistrarDetalle"
     [style]="{ width:'600px',height:'1000px' }" [closable]="true" [resizable]="true" [draggable]="false">

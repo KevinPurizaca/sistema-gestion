@@ -1,1 +1,47 @@
-<p>registrar-registros works!</p>
+<p-toast key="tst" [baseZIndex]="99999"></p-toast>
+
+<p-card header="Registrar Seguimientos">
+
+    <form [formGroup]="formRegistro">
+        <div class="p-fluid p-formgrid grid">
+
+            <div class="col-12 md:col-12">
+                <label class="label-filter-text">Cliente</label>
+                <p-autoComplete [(ngModel)]="selectedClientes" [dropdown]="true" [suggestions]="lstClientes"
+                    (completeMethod)="filtrarClientes($event)" minLength="1" field="cliente" appendTo="body"
+                    formControlName="cboCliente" placeholder="Seleccione Cliente" />
+
+                <small
+                    *ngIf="formRegistro.controls['cboCliente'].invalid && formRegistro.controls['cboCliente'].touched"
+                    class="text-red-600">Seleccione Cliente.</small>
+            </div>
+
+            <div class="col-12 md:col-12">
+                <label class="label-filter-text">Asunto</label>
+                <input type="text" pInputText formControlName="txtAsunto" [(ngModel)]="requestGuardar.asunto"/>
+
+                <small
+                    *ngIf="formRegistro.controls['txtAsunto'].invalid && formRegistro.controls['txtAsunto'].touched"
+                    class="text-red-600">Ingrese Asunto.</small>
+            </div>
+
+            <div class="col-12 md:col-12">
+                <label class="label-filter-text">Descripcion Detallada</label>
+                <textarea rows="11" cols="30" pInputTextarea formControlName="txtDescripcion" [(ngModel)]="requestGuardar.detalle"></textarea>
+
+                <small
+                    *ngIf="formRegistro.controls['txtDescripcion'].invalid && formRegistro.controls['txtDescripcion'].touched"
+                    class="text-red-600">Ingrese Descripcion Detallada.</small>
+            </div>
+
+        </div>
+    </form>
+ 
+    <ng-template pTemplate="footer">
+        <div class="flex justify-content-end">
+            <p-button label="Registrar" severity="primary" icon="pi pi-save" iconPos="right" (onClick)="guardarRegistro()" [loading]="loadingRegistrar"/>
+
+        </div>
+    </ng-template>
+</p-card>
+

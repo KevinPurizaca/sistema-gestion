@@ -102,6 +102,10 @@ export class ConsultaRegistrosComponent implements OnInit {
   }
 
 
+  mostrarmsg(){
+    this.commonService.HanddleInfoMessage(MSG_CRUD.MsgActualizadaRegistrada);
+
+  }
  
 
   loadData(req:any){
@@ -124,7 +128,6 @@ export class ConsultaRegistrosComponent implements OnInit {
       this.formRegistro.controls[c].markAsTouched();
     }
 
-    console.log("🚀  this.formRegistro:", this.formRegistro.value)
 
     if(this.formRegistro.valid){
       this.loadingRegistrar = true;
@@ -134,7 +137,6 @@ export class ConsultaRegistrosComponent implements OnInit {
       this.requestGuardar.detalle = value.txtDescripcion;
       this.requestGuardar.usuarioRegistro = 8829;
       
-      console.log("🚀   this.requestGuardar:",  this.requestGuardar);
 
       this.httpCoreService.post(this.requestGuardar,ENDPOINTS.RegistrarSeguimiento).subscribe(res => {
         if(res.success){
@@ -147,6 +149,7 @@ export class ConsultaRegistrosComponent implements OnInit {
       })
     }
   }
+
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
@@ -163,7 +166,6 @@ export class ConsultaRegistrosComponent implements OnInit {
   
 
   showModal(item: any, caso: string) {
-  console.log("🚀  item:", item)
 
     if (caso == "Registrar") {
       this.bEditarDetalle = false;

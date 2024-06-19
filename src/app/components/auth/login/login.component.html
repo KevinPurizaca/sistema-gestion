@@ -1,31 +1,96 @@
-<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
-    <div class="flex flex-column align-items-center justify-content-center">
-        <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0">                
-        <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
-            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
-                <div class="text-center mb-5">
-                    <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3">
-                    <div class="text-900 text-3xl font-medium mb-3">Welcome, Isabel!</div>
-                    <span class="text-600 font-medium">Sign in to continue</span>
-                </div>
-
-                <div>
-                    <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
-                    <input id="email1" type="text" placeholder="Email address" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
-
-                    <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
-                    <p-password id="password1" [(ngModel)]="password" placeholder="Password" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
-
-                    <div class="flex align-items-center justify-content-between mb-5 gap-5">
-                        <div class="flex align-items-center">
-                            <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
-                            <label for="rememberme1">Recuerdame</label>
-                        </div>
-                        <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
-                    </div>
-                    <button pButton pRipple label="Sign In" class="w-full p-3 text-xl" [routerLink]="['/']"></button>
-                </div>
-            </div>
+<div class="auth">
+    <div class="auth-form">
+      <div class="auth-form__card">
+        <div class="auth-form__card--logo">
+          <figure class="logo">
+            <img src="assets/img/auth/logo-tgestiona.png" alt="" />
+          </figure>
         </div>
+        <div class="auth-form__card--title">
+          Iniciar sesión
+        </div>
+        <div class="form mt-5" autocomplete="off" [formGroup]="form">
+          <input type="hidden" name="__RequestVerificationToken" [value]="this.csrfToken"
+            formControlName="RequestVerificacionToken" />
+  
+          <!-- <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Usuario</mat-label>
+            <input matInput type="text" formControlName="usuario">
+            <mat-error *ngIf="form.controls['usuario'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field> -->
+  
+          <!-- <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="password" formControlName="password">
+            <mat-error *ngIf="form.controls['password'].hasError('required')">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field> -->
+  
+  
+          <div>
+            <!-- <re-captcha formControlName="recaptchaReactive" name="recaptcha" [(ngModel)]="tokenRecaptcha"
+              (resolved)="resolved($event)"  #IdCaptcha
+              [class.is-invalid]="form.controls['recaptchaReactive'].invalid && (form.controls['recaptchaReactive'].dirty || form.controls['recaptchaReactive'].touched)">
+            </re-captcha> -->
+            <div
+              *ngIf="form.controls['recaptchaReactive'].invalid && (form.controls['recaptchaReactive'].dirty || form.controls['recaptchaReactive'].touched)">
+              <!-- <mat-error style="font-size: 75%;" *ngIf="form.controls['recaptchaReactive'].hasError('required')">
+                Este campo es obligatorio
+              </mat-error> -->
+            </div>
+          </div>
+          <button (click)="login($event)" type="button" mat-raised-button class="btn btn-primary" [disabled]="isSubmitted">
+            <span class="material-symbols-outlined" *ngIf="isSubmitted">
+              <!-- <mat-spinner diameter="20"></mat-spinner> -->
+            </span>
+            Ingresar
+          </button>
+          <br>
+          <a (click)="recuperarRedirect()" class="form-recuperar">Recuperar contraseña</a>
+          <!--
+              <div *ngIf="error" class="alert-error mt-2">
+                  El usuario o contraseña no son correctos.
+              </div>-->
+  
+        </div>
+      </div>
     </div>
-</div>
+    <div class="content-background">
+      <svg class="semi-circle" viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice"
+        xmlns="http://www.w3.org/2000/svg">
+        <g class="" fill="none" stroke="currentColor" stroke-width="100" style="
+          --tw-text-opacity: 1;
+          color: rgba(51, 65, 85, var(--tw-text-opacity));
+          opacity: 0.25;
+  
+          ">
+          <circle r="234" cx="196" cy="23"></circle>
+          <circle r="234" cx="790" cy="491"></circle>
+        </g>
+      </svg>
+      <!-- Dots -->
+      <svg class="svg-square" viewBox="0 0 220 192" width="220" height="192" fill="none">
+        <defs>
+          <pattern id="837c3e70-6c3a-44e6-8854-cc48c737b659" x="0" y="0" width="20" height="20"
+            patternUnits="userSpaceOnUse">
+            <rect x="0" y="0" width="4" height="4" fill="currentColor"></rect>
+          </pattern>
+        </defs>
+        <rect width="220" height="192" fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"></rect>
+      </svg>
+
+      
+      <div class="content-text">
+        <div class="content-text__text">
+          <div>Sistema de</div>
+          <div>facilities - Edi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <router-outlet></router-outlet>
+  

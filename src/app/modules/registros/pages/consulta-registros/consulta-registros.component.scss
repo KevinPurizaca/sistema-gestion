@@ -8,16 +8,22 @@
     min-width: 10rem;    
 }
 .columna-cliente{
-    min-width: 15rem;    
-    // text-overflow: ellipsis;
+    min-width: 15rem; 
+    max-width: 15rem;  
+   
+    text-overflow: ellipsis;
     white-space: nowrap;
-    // overflow: hidden;
+    overflow: hidden;
 }
 .columna-registrado{
     min-width: 15rem;    
 }
 .columna-asunto{
-    min-width: 15rem;    
+    min-width: 15rem;  
+    max-width: 15rem;  
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;  
 }
 .columna-ver-detallles{
     min-width: 10rem;
