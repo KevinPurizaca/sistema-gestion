@@ -28,7 +28,6 @@ import { environment } from '../../../../environments/environment';
         RecaptchaModule,
         RecaptchaFormsModule,
     ],
-    declarations: [LoginComponent],
-    providers:[]
+    declarations: [LoginComponent]
 })
 export class LoginModule { }

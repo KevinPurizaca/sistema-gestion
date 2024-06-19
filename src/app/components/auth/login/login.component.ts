@@ -16,7 +16,7 @@ import { environment } from '../../../../environments/environment';
 
 export class LoginComponent {
 
-     siteKeyRecaptcha = environment.SecretKeyCaptcha;
+     siteKeyRecaptcha = environment.ClientKeyCaptcha;
 
     loading: boolean = false;
 
@@ -121,6 +121,7 @@ export class LoginComponent {
 
                 // var encriptdado = this.Encryptar(JSON.stringify(request));
                 window.localStorage.setItem("usuarioSession", JSON.stringify(usuarioSession));
+                window.localStorage.setItem("accessToken", JSON.stringify(res.token));
                 this.loading =false;
 
                 this.router.navigateByUrl("/Registros/Consulta-Registros")

@@ -6,7 +6,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MessageService } from 'primeng/api';
 import { AuthService } from './components/auth/services/auth.service';
-import { RecaptchaLoaderService } from 'ng-recaptcha';
+import { RECAPTCHA_SETTINGS, RecaptchaLoaderService, RecaptchaSettings } from 'ng-recaptcha';
+import { environment } from '../environments/environment';
 
 
 export const appConfig: ApplicationConfig = {
@@ -17,7 +18,13 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withHashLocation()),
     MessageService,
     AuthService,
-    RecaptchaLoaderService
+    RecaptchaLoaderService,
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: environment.ClientKeyCaptcha
+      } as RecaptchaSettings,
+    }
   ],
 
 };
