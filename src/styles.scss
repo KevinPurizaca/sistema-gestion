@@ -13,7 +13,20 @@ $gutter: 1rem; //for primeflex grid system
 
 
 
-
+.img-dashboard {
+    position: fixed; /* Para que ocupe toda la pantalla y se mantenga al hacer scroll */
+    top: 0;
+    left: 0;
+    width: 101%;
+    height: 102%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; 
+  }
+  .cursor-pointer{
+   cursor: pointer; 
+  }
+  
 
 // $ancho-alto-scroll:10px;
 // /* Estilos para el scrollbar en WebKit */

@@ -17,8 +17,8 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Menu',
                 items: [
-                    { label: 'Nuevo Registros', icon: 'pi pi-fw pi-home', routerLink: ['Registros/Crear-Registros'] },
                     { label: 'Consulta de Registros', icon: 'pi pi-fw pi-home', routerLink: ['Registros/Consulta-Registros'] },
+                    { label: 'Nuevo Registros', icon: 'pi pi-fw pi-home', routerLink: ['Registros/Crear-Registros'] },
                 ]
             },
         ];
