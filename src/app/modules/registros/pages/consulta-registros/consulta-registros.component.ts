@@ -1,44 +1,92 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PageEvent } from '../../../../core/config/options';
+import { MSG_CRUD, PageEvent, Perfiles, ROWS_DEFAULT, ROWS_OPTIONS } from '../../../../core/config/options';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { HttpCoreService } from '../../../../core/services/httpCore.service';
+import { ENDPOINTS } from '../../../../core/config/Endpoints';
+import { CommonService } from '../../../../core/services/common.service';
 
 @Component({
   selector: 'app-consulta-registros',
   standalone: false,
+  providers:[HttpCoreService],
   templateUrl: './consulta-registros.component.html',
   styleUrl: './consulta-registros.component.scss'
 })
 export class ConsultaRegistrosComponent implements OnInit {
+  dateFechaInicio: Date | undefined;
+  dateFechaFin: Date | undefined;
+
+
   isCollapsed: boolean = false;
   bDialogRegistrarDetalle: boolean = false;
+  bEditarDetalle: boolean = false;
 
+  loading: boolean = true;
+  loadingRegistrar: boolean = false;
+
+  
   formBusqueda: FormGroup;
   formRegistro: FormGroup;
 
+
   first: number = 0;
-  rows: number = 10;
+  rows: number = ROWS_DEFAULT;
+  rowsPageOptions=ROWS_OPTIONS;
+  totalRecord:number=0;
 
 
+  lstRegistros: any[] = [];
 
-  lstClientes: any[] | undefined;
+
+  // AUTOCOMPLETABLES
+
+  lstClientes: any[] = [];
   selectedClientes: any;
-  filtroClientes: any[] = [];
+
+  lstClientesFiltro: any[] = [];
+  selectedClientesFiltro: any;
+
+  lstUsuarios: any[] = [];
+  selectedUsuarios: any;
+
+
+  iPerfilGerente:number =Perfiles.Perfil2;
+
+
+  request ={
+    idCliente: 0,
+    codigo: "",
+    asunto: "",
+    pagina: {
+      page: 0,
+      pageSize: ROWS_DEFAULT
+    }
+  }
+
+  requestGuardar ={
+    id: 0,
+    idCliente: 0,
+    asunto: "",
+    detalle: "",
+    comentarioGerencia: "",
+    usuarioRegistro: 0
+  }
+
 
   constructor(
     fb: FormBuilder,
     fr: FormBuilder,
-
+    private httpCoreService:HttpCoreService,
+    private commonService: CommonService,
   ) {
     this.formBusqueda = fb.group({
-      // txtUsuario: [''],
-      txtNombre: [''],
-      txtApellidoPaterno: [''],
-      txtApellidoMaterno: [''],
-      txtNroDocumento: [''],
-      cboEstado: [-1],
-      cboPerfil: [-1],
-      cboTipoDocumento: [-1],
+      cboCliente: [''],
+      txtCodigo: [''],
+      txtAsunto: [''],
+      cboUsuario: [''],
+      cboFechaInicio: [-1],
+      cboFechaFin: [-1],
     });
 
     this.formRegistro = fr.group({
@@ -49,57 +97,135 @@ export class ConsultaRegistrosComponent implements OnInit {
     });
   }
 
-  lstRegistros: any[] = [
-    { id: 1, fecha: "01/01/2023", cliente: "Juan Pérez", registradoPor: "Ana Gómez", asunto: "Reunión inicial" },
-    { id: 2, fecha: "05/01/2023", cliente: "María Rodríguez", registradoPor: "Carlos Sánchez", asunto: "Presentación del proyecto" },
-    { id: 3, fecha: "10/02/2023", cliente: "Luis Hernández", registradoPor: "Laura Martínez", asunto: "Revisión de contrato" },
-    { id: 4, fecha: "15/03/2023", cliente: "Ana Fernández", registradoPor: "David López", asunto: "Firma de acuerdo" },
-    { id: 5, fecha: "20/04/2023", cliente: "Pedro Ramírez", registradoPor: "Sofía González", asunto: "Entrega de productos" },
-    { id: 6, fecha: "25/05/2023", cliente: "Elena Díaz", registradoPor: "Jorge Torres", asunto: "Revisión de progreso" },
-    { id: 7, fecha: "30/06/2023", cliente: "Miguel Castillo", registradoPor: "Lucía Moreno", asunto: "Encuesta de satisfacción" },
-    { id: 8, fecha: "10/07/2023", cliente: "Laura Morales", registradoPor: "Roberto Ruiz", asunto: "Actualización del proyecto" },
-    { id: 9, fecha: "15/08/2023", cliente: "Ricardo Pérez", registradoPor: "Andrea Gutiérrez", asunto: "Cierre del proyecto" },
-    { id: 10, fecha: "20/09/2023", cliente: "Marta Sánchez", registradoPor: "Pablo García", asunto: "Reunión de seguimiento" }
-  ];
-
-
-
   ngOnInit(): void {
-
-  }
-
-  collapsedChange(event: any) {
-    this.isCollapsed = event;
+    this.loadData(this.request);
   }
 
 
+ 
 
-  onPageChange(event: any) {
-    this.first = event.first;
-    this.rows = event.rows;
+  loadData(req:any){
+    this.loading = true;
+    this.lstRegistros = [];
+
+    this.httpCoreService.post(req,ENDPOINTS.ListarSeguimiento).subscribe(res => {
+      if (res.success){
+        this.lstRegistros = res.body;
+        this.totalRecord = res.totalRecord;
+      }
+      this.loading = false;
+    })
   }
 
-  showModal(item: any, caso: string) {
-    console.log("🚀  caso:", caso)
-    console.log("🚀  item:", item)
-    if (caso == "Registrar") {
-      this.bDialogRegistrarDetalle = true;
-    }
-    else if (caso == "Ver-Detalle") {
-      let item2 = item;
-      this.bDialogRegistrarDetalle = true;
-    }
-  }
 
   guardarRegistro() {
 
     for (let c in this.formRegistro.controls) {
       this.formRegistro.controls[c].markAsTouched();
     }
+
+    console.log("🚀  this.formRegistro:", this.formRegistro.value)
+
+    if(this.formRegistro.valid){
+      this.loadingRegistrar = true;
+      const value = this.formRegistro.value;
+      this.requestGuardar.idCliente = value.cboCliente.id;
+      this.requestGuardar.asunto = value.txtAsunto;
+      this.requestGuardar.detalle = value.txtDescripcion;
+      this.requestGuardar.usuarioRegistro = 8829;
+      
+      console.log("🚀   this.requestGuardar:",  this.requestGuardar);
+
+      this.httpCoreService.post(this.requestGuardar,ENDPOINTS.RegistrarSeguimiento).subscribe(res => {
+        if(res.success){
+          this.request.pagina.page = 0;
+          this.commonService.HanddleInfoMessage(MSG_CRUD.MsgActualizadaRegistrada);
+          this.loadData(this.request);
+          this.loadingRegistrar = false;
+          this.bDialogRegistrarDetalle = false;
+        }
+      })
+    }
+  }
+  onPageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
+
+    this.request.pagina.page = event.page;
+    this.request.pagina.pageSize = event.rows;
+    this.loadData(this.request);
+  }
+
+  collapsedChange(event: any) {
+    this.isCollapsed = event;
+  }
+
+  
+
+  showModal(item: any, caso: string) {
+  console.log("🚀  item:", item)
+
+    if (caso == "Registrar") {
+      this.bEditarDetalle = false;
+      this.bDialogRegistrarDetalle = true;
+    }
+    else if (caso == "Ver-Detalle") {
+      this.requestGuardar.idCliente = item.idCliente;
+      this.requestGuardar.asunto =item.asunto;
+      this.requestGuardar.detalle = item.detalle;
+      this.requestGuardar.usuarioRegistro = item.usuarioRegistro;
+      this.requestGuardar.comentarioGerencia = item.comentarioGerencia;
+
+      this.httpCoreService.get( `${ENDPOINTS.ObtenerClientes}Cliente=${item.cliente}`).subscribe(res => {
+        if(res.success){
+          this.selectedClientes = res.body[0];        
+        }
+      })
+
+      this.bEditarDetalle = true;
+      this.bDialogRegistrarDetalle = true;
+    }
+  }
+
+  
+
+  //#region  AUTOCOMPLETABLES
+
+  filtrarClientesFiltro(event: AutoCompleteCompleteEvent) {
+    const params = new URLSearchParams();
+
+    if (event.query != "") params.append('Cliente',event.query);
+  
+      this.httpCoreService.get( `${ENDPOINTS.ObtenerClientes}${params.toString()}`).subscribe(res => {
+        if(res.success){
+          this.lstClientesFiltro = res.body;        
+        }
+      })
   }
 
   filtrarClientes(event: AutoCompleteCompleteEvent) {
-  console.log("🚀  event:", event)
+    const params = new URLSearchParams();
 
+    if (event.query != "") params.append('Cliente',event.query);
+  
+      this.httpCoreService.get( `${ENDPOINTS.ObtenerClientes}${params.toString()}`).subscribe(res => {
+        if(res.success){
+          this.lstClientes = res.body;        
+        }
+      })
   }
+
+  filtrarUsuarios(event: AutoCompleteCompleteEvent) {
+    const params = new URLSearchParams();
+
+    if (event.query != "") params.append('Usuario',event.query);
+  
+      this.httpCoreService.get( `${ENDPOINTS.ObtenerUsuarios}${params.toString()}`).subscribe(res => {
+        if(res.success){
+          this.lstUsuarios = res.body;        
+        }
+      })
+  }
+
+  //#endregion
 }

@@ -1,3 +1,6 @@
+.columna-codigo{
+    min-width: 9rem;
+}
 .columna-carta{
     min-width: 5rem;
 }
@@ -6,6 +9,9 @@
 }
 .columna-cliente{
     min-width: 15rem;    
+    // text-overflow: ellipsis;
+    white-space: nowrap;
+    // overflow: hidden;
 }
 .columna-registrado{
     min-width: 15rem;    

@@ -15,6 +15,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CalendarModule } from 'primeng/calendar';
 
 
 const routes: Routes = [
@@ -42,7 +43,8 @@ const routes: Routes = [
     InputTextModule,
     DropdownModule,
     InputTextareaModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    CalendarModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

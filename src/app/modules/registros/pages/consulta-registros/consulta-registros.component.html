@@ -1,82 +1,65 @@
+<p-toast key="tst" [baseZIndex]="99999"></p-toast>
+
+
 <p-panel header="Busqueda de Registros" [toggleable]="true" (collapsedChange)="collapsedChange($event)"
     [collapsed]="false">
     <ng-template pTemplate="icons">
-        <button *ngIf="isCollapsed" pButton label="Nuevo Registro" icon="pi pi-plus-circle"
-            class="p-button-secondary p-button-xs p-button-outlined mr-2"></button>
+            <p-button  *ngIf="isCollapsed"  label="Nuevo Registro" severity="secondary" icon="pi pi-plus" iconPos="right" [outlined]="true" size="small" />
     </ng-template>
+
     <form [formGroup]="formBusqueda">
         <div class="p-fluid p-formgrid grid">
 
-            <div class="col-12 md:col-3">
-                <label class="label-filter-text">Nombres</label>
-                <!-- <input formControlName="txtNombre" type="text" pInputText 
-              class="p-inputtext p-component p-element" />
-            <small class="ng-dirty ng-invalid" *ngIf="formBusqueda.get('txtNombre')?.hasError('pattern')">Ingrese solo
-              Letras</small> -->
+            <div class="col-12 md:col-4">
+                <label class="label-filter-text">Codigo</label>
+                <input type="text" pInputText formControlName="txtCodigo" />
             </div>
 
-            <div class="col-12 md:col-3">
-                <label class="label-filter-text">Apellido Paterno</label>
-                <!-- <input formControlName="txtApellidoPaterno" type="text" pInputText 
-              class="p-inputtext p-component p-element" />
-            <small class="ng-dirty ng-invalid" *ngIf="formBusqueda.get('txtApellidoPaterno')?.hasError('pattern')">Ingrese solo
-              Letras</small> -->
+            <div class="col-12 md:col-4">
+                <label class="label-filter-text">Asunto</label>
+                <input type="text" pInputText formControlName="txtAsunto" />
             </div>
 
-            <div class="col-12 md:col-3">
-                <label class="label-filter-text">Apellido Materno</label>
-                <!-- <input formControlName="txtApellidoMaterno" type="text" pInputText 
-              class="p-inputtext p-component p-element" />
-            <small class="ng-dirty ng-invalid" *ngIf="formBusqueda.get('txtApellidoMaterno')?.hasError('pattern')">Ingrese solo
-              Letras</small> -->
+            <div class="col-12 md:col-4">
+                <label class="label-filter-text">Cliente</label>
+                <p-autoComplete [(ngModel)]="selectedClientesFiltro" [dropdown]="true" [suggestions]="lstClientesFiltro"
+                    (completeMethod)="filtrarClientesFiltro($event)" minLength="1" field="cliente" appendTo="body"
+                    placeholder="Seleccione Cliente" formControlName="cboCliente" />
             </div>
 
-            <div class="col-12 md:col-3">
-                <label class="label-filter-text">Perfil</label>
-                <!-- <p-dropdown formControlName="cboPerfil" [options]="lsperfilcb" optionLabel="value"
-              optionValue="id" [emptyMessage]="vmessageEmpty">
-            </p-dropdown> -->
+
+            <div class="col-12 md:col-4">
+                <label class="label-filter-text">Fecha Inicio</label>
+                <p-calendar [(ngModel)]="dateFechaInicio" [iconDisplay]="'input'" [showIcon]="true"
+                    inputId="icondisplay" appendTo="body" dateFormat="dd/mm/yy" formControlName="cboFechaInicio" />
             </div>
 
-            <div class="col-12 md:col-3">
-                <label class="label-filter-text">Nro Documento</label>
-                <!-- <p-inputNumber class="p-inputtext p-component p-element" [maxlength]="20"
-              formControlName="txtNroDocumento"  inputId="withoutgrouping"
-              [useGrouping]="false" class="form-control" autocomplete="off"> </p-inputNumber>
-    
-            <small class="ng-dirty ng-invalid" *ngIf="formBusqueda.get('txtNroDocumento')?.hasError('pattern')">Ingrese solo
-              Letras</small> -->
+            <div class="col-12 md:col-4">
+                <label class="label-filter-text">Fecha Fin</label>
+                <p-calendar [(ngModel)]="dateFechaFin" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
+                    appendTo="body" dateFormat="dd/mm/yy" formControlName="cboFechaFin" />
             </div>
 
-            <div class="col-12 md:col-3">
-                <label class="label-filter-text">Tipo Documento</label>
-                <!-- <p-dropdown formControlName="cboTipoDocumento" [options]="lstipodocumentocb" optionLabel="value"
-              optionValue="id" [emptyMessage]="vmessageEmpty">
-            </p-dropdown> -->
+            <div class="col-12 md:col-4">
+                <label class="label-filter-text">Usuario Registra</label>
+                <p-autoComplete [(ngModel)]="selectedUsuarios" [dropdown]="true" [suggestions]="lstUsuarios"
+                    (completeMethod)="filtrarUsuarios($event)" minLength="1" field="usuario" appendTo="body"
+                    placeholder="Seleccione Usuario" formControlName="cboUsuario" />
             </div>
 
-            <div class="col-12 md:col-2">
-                <label class="label-filter-text">Estado</label>
-                <!-- <p-dropdown formControlName="cboEstado" placeholder="Seleccione" [options]="lstestadocb"
-             optionLabel="value" optionValue="id" [emptyMessage]="vmessageEmpty">
-            </p-dropdown> -->
-            </div>
         </div>
-
 
 
         <div class="flex flex-wrap sm:flex-row">
             <div class="sm:mr-auto mb-3 mr-3">
-                <button pButton label="Nuevo Registro" type="button" icon="pi pi-plus"
-                    (click)="showModal(null,'Registrar')" class="p-button-help"></button>
+                <p-button label="Nuevo Registro" severity="help" icon="pi pi-plus" iconPos="right" (click)="showModal(null,'Registrar')" />
             </div>
             <div class="mb-3 mr-3">
-                <button pButton label="Buscar" icon="pi pi-search" type="submit"
-                    class="p-button-outlined p-button-primary"></button>
+                <p-button label="Buscar" severity="primary" icon="pi pi-search" iconPos="right" [outlined]="true" />
             </div>
             <div class="">
-                <button pButton label="Limpiar" type="button" icon="pi pi-trash"
-                    class="p-button-outlined p-button-secondary"></button>
+                <p-button label="Limpiar" severity="secondary" icon="pi pi-trash" iconPos="right" [outlined]="true" />
+
             </div>
         </div>
     </form>
@@ -86,10 +69,11 @@
 
 <p-panel header="Resultado de Registros" [toggleable]="false">
 
-    <p-table [value]="lstRegistros" styleClass="p-datatable-sm">
+    <p-table [value]="lstRegistros" styleClass="p-datatable-sm" [loading]="loading">
         <ng-template pTemplate="header">
             <tr>
                 <th class="columna-carta"></th>
+                <th class="columna-codigo">Codigo</th>
                 <th class="columna-fecha">Fecha Registro</th>
                 <th class="columna-cliente">Cliente</th>
                 <th class="columna-carta">Registrado Por</th>
@@ -101,25 +85,38 @@
             <tr>
                 <td class="columna-carta">
                     <p-button icon="pi pi-envelope" [rounded]="false" [text]="true" [severity]="'warning'" />
-
                 </td>
-                <td class="columna-fecha">{{ data.fecha }}</td>
+                <td class="columna-codigo">{{ data.codigo }}</td>
+                <td class="columna-fecha">{{ data.fechaRegistro | date: 'dd/MM/YYYY' }}</td>
                 <td class="columna-cliente">{{ data.cliente }}</td>
-                <td class="columna-registrado">{{ data.registradoPor }}</td>
+                <td class="columna-registrado">{{ data.usuario }}</td>
                 <td class="columna-asunto">{{ data.asunto }}</td>
                 <td class="columna-ver-detallles">
-                    <p-button label="Ver Detalles" [text]="true" />
+                    <p-button label="Ver Detalles" [text]="true" (onClick)="showModal(data, 'Ver-Detalle')"/>
+                </td>
+            </tr>
+        </ng-template>
 
-
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">No se encontró Información.</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="loadingbody">
+            <tr>
+                <td colspan="7">
+                    Cargando Información de Proveedores. Espere por favor.
                 </td>
             </tr>
         </ng-template>
     </p-table>
 
 
-    <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="120"
-        [rowsPerPageOptions]="[10, 20, 30]" />
+    <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="totalRecord"
+        [rowsPerPageOptions]="rowsPageOptions" 
+        [showCurrentPageReport]="true"  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"/>
 </p-panel>
+
 
 
 
@@ -127,50 +124,46 @@
 <p-dialog header="Nuevo Registro" [modal]="true" [(visible)]="bDialogRegistrarDetalle"
     [style]="{ width:'600px',height:'1000px' }" [closable]="true" [resizable]="true" [draggable]="false">
 
-
-
     <ng-template pTemplate="content">
         <form [formGroup]="formRegistro">
             <div class="p-fluid p-formgrid grid">
 
                 <div class="col-12 md:col-12">
                     <label class="label-filter-text">Cliente</label>
-                    <!-- <p-dropdown [options]="lstClientes" optionLabel="value" optionValue="id" placeholder="Seleccione" formControlName="cboCliente" appendTo="body" [filter]="true"/> -->
-                    <p-autoComplete 
-                    [(ngModel)]="selectedClientes" 
-                    [dropdown]="false" 
-                    [suggestions]="filtroClientes" 
-                    (completeMethod)="filtrarClientes($event)" 
-                    minLength="2"
-                    placeholder="Seleccione Cliente"
-                     />
+                    <p-autoComplete [(ngModel)]="selectedClientes" [dropdown]="true" [suggestions]="lstClientes"
+                        (completeMethod)="filtrarClientes($event)" minLength="1" field="cliente" appendTo="body"
+                        formControlName="cboCliente" placeholder="Seleccione Cliente" />
 
-                    <small *ngIf="formRegistro.controls['cboCliente'].invalid && formRegistro.controls['cboCliente'].touched"
-                    class="text-red-600">Seleccione Cliente.</small>
+                    <small
+                        *ngIf="formRegistro.controls['cboCliente'].invalid && formRegistro.controls['cboCliente'].touched"
+                        class="text-red-600">Seleccione Cliente.</small>
                 </div>
 
                 <div class="col-12 md:col-12">
                     <label class="label-filter-text">Asunto</label>
-                    <input type="text" pInputText formControlName="txtAsunto"/>
+                    <input type="text" pInputText formControlName="txtAsunto" [(ngModel)]="requestGuardar.asunto"/>
 
-                    <small  *ngIf="formRegistro.controls['txtAsunto'].invalid && formRegistro.controls['txtAsunto'].touched"
-                    class="text-red-600">Ingrese Asunto.</small>
+                    <small
+                        *ngIf="formRegistro.controls['txtAsunto'].invalid && formRegistro.controls['txtAsunto'].touched"
+                        class="text-red-600">Ingrese Asunto.</small>
                 </div>
 
                 <div class="col-12 md:col-12">
                     <label class="label-filter-text">Descripcion Detallada</label>
-                    <textarea rows="4" cols="30" pInputTextarea formControlName="txtDescripcion"></textarea>
+                    <textarea rows="4" cols="30" pInputTextarea formControlName="txtDescripcion" [(ngModel)]="requestGuardar.detalle"></textarea>
 
-                    <small  *ngIf="formRegistro.controls['txtDescripcion'].invalid && formRegistro.controls['txtDescripcion'].touched"
-                    class="text-red-600">Ingrese Descripcion Detallada.</small>
+                    <small
+                        *ngIf="formRegistro.controls['txtDescripcion'].invalid && formRegistro.controls['txtDescripcion'].touched"
+                        class="text-red-600">Ingrese Descripcion Detallada.</small>
                 </div>
 
-                <div class="col-12 md:col-12">
+                <div class="col-12 md:col-12" *ngIf="bEditarDetalle">
                     <label class="label-filter-text">Comentario</label>
-                    <textarea rows="4" cols="30" pInputTextarea formControlName="txtComentario"></textarea>
+                    <textarea rows="4" cols="30" pInputTextarea formControlName="txtComentario"  [(ngModel)]="requestGuardar.comentarioGerencia"></textarea>
 
-                    <small  *ngIf="formRegistro.controls['txtDescripcion'].invalid && formRegistro.controls['txtDescripcion'].touched"
-                    class="text-red-600">Ingrese Comentario.</small>
+                    <small
+                        *ngIf="formRegistro.controls['txtDescripcion'].invalid && formRegistro.controls['txtDescripcion'].touched"
+                        class="text-red-600">Ingrese Comentario.</small>
                 </div>
 
             </div>
@@ -179,14 +172,9 @@
     </ng-template>
 
     <ng-template pTemplate="footer">
-
-        <p-button label="Cerrar" severity="secondary" icon="pi pi-times" iconPos="right" size="small"
+        <p-button label="Cerrar" severity="secondary" icon="pi pi-times" iconPos="right"
             (onClick)="bDialogRegistrarDetalle = false" />
-        <p-button label="Enviar" severity="primary" icon="pi pi-send" iconPos="right" size="small" 
-            (onClick)="guardarRegistro()"/>
-
-
-
+        <p-button label="Enviar" severity="primary" icon="pi pi-send" iconPos="right" (onClick)="guardarRegistro()" [loading]="loadingRegistrar" />
     </ng-template>
 </p-dialog>
 
