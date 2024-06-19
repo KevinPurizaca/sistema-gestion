@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable, of } from 'rxjs';
 import { AuthUtils } from '../../../core/auth.utils';
+import { KeysLocalStorage } from '../../../core/config/options';
 
 
 @Injectable()
@@ -54,9 +55,8 @@ export class AuthService {
    * Sign out
    */
   signOut(): Observable<any> {
-    localStorage.removeItem('usuarioSession');
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('listOpciones');
+    localStorage.removeItem(KeysLocalStorage.InfoUsuario);
+    localStorage.removeItem(KeysLocalStorage.Token);
 
     this._authenticated = false;
     return of(true);
@@ -65,12 +65,12 @@ export class AuthService {
 
 
   set accessToken(token: string) {
-    localStorage.setItem('accessToken', token);
+    localStorage.setItem(KeysLocalStorage.Token, token);
   }
 
 
   get accessToken(): string {
-    return localStorage.getItem('accessToken') ?? '';
+    return localStorage.getItem(KeysLocalStorage.Token) ?? '';
   }
   /**
    * Check the authentication status

@@ -17,7 +17,7 @@
             <div class="col-12 md:col-4">
                 <label class="label-filter-text">Cliente</label>
                 <p-autoComplete [(ngModel)]="selectedClientesFiltro" [dropdown]="true" [suggestions]="lstClientesFiltro"
-                    (completeMethod)="filtrarClientesFiltro($event)" minLength="1" field="cliente" appendTo="body"
+                    (completeMethod)="filtrarClientes($event,'Filtros')" minLength="1" field="cliente" appendTo="body"
                     placeholder="Seleccione Cliente" formControlName="cboCliente" />
             </div>
 
@@ -111,6 +111,7 @@
         [showCurrentPageReport]="true"  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"/>
 </p-card>
 
+
 <p-dialog [header]="tituloModal" [modal]="true" [(visible)]="bDialogRegistrarDetalle"
     [style]="{ width:widthModal,height:heigthModal}" [closable]="true" [resizable]="true" [draggable]="false">
 
@@ -122,8 +123,9 @@
                     <label class="label-filter-text">Cliente</label>
                     <p-autoComplete [(ngModel)]="selectedClientes" [dropdown]="false" [suggestions]="lstClientes"
                      [readonly]="bEditarDetalle" [disabled]="bEditarDetalle"
-                        (completeMethod)="filtrarClientes($event)" minLength="1" field="cliente" appendTo="body"
-                        formControlName="cboCliente" placeholder="Escribe y Seleccione Cliente" />
+                        (completeMethod)="filtrarClientes($event,'Filtros')" minLength="1" field="cliente" appendTo="body"
+                        formControlName="cboCliente" placeholder="Escribe y Seleccione Cliente" 
+                        [ngClass]="{'ng-invalid ng-dirty' : bSubmited && !selectedClientes}" />
 
                     <small
                         *ngIf="bSubmited && formRegistro.controls['cboCliente'].invalid && formRegistro.controls['cboCliente'].touched"
@@ -132,7 +134,8 @@
 
                 <div class="col-12 md:col-12">
                     <label class="label-filter-text">Asunto</label>
-                    <input type="text" pInputText formControlName="txtAsunto" [(ngModel)]="requestGuardar.asunto" [readonly]="bEditarDetalle"/>
+                    <input type="text" pInputText formControlName="txtAsunto" [(ngModel)]="requestGuardar.asunto" [readonly]="bEditarDetalle"
+                    [ngClass]="{'ng-invalid ng-dirty' : bSubmited && !requestGuardar.asunto}" />
 
                     <small
                         *ngIf="bSubmited && formRegistro.controls['txtAsunto'].invalid && formRegistro.controls['txtAsunto'].touched"
@@ -141,22 +144,26 @@
 
                 <div class="col-12 md:col-12">
                     <label class="label-filter-text">Descripcion Detallada</label>
-                    <textarea rows="5" cols="30" pInputTextarea formControlName="txtDescripcion" [(ngModel)]="requestGuardar.detalle" [readonly]="bEditarDetalle"></textarea>
+                    <textarea rows="5" cols="30" pInputTextarea formControlName="txtDescripcion" [(ngModel)]="requestGuardar.detalle" [readonly]="bEditarDetalle"
+                    [ngClass]="{'ng-invalid ng-dirty' : bSubmited && !requestGuardar.detalle}"></textarea>
 
                     <small
                         *ngIf="bSubmited && formRegistro.controls['txtDescripcion'].invalid && formRegistro.controls['txtDescripcion'].touched"
                         class="text-red-600">Ingrese Descripcion Detallada.</small>
                 </div>
 
-                <div class="col-12 md:col-12" *ngIf="bEditarDetalle">
-                    <label class="label-filter-text">Comentario</label>
-                    <textarea rows="6" cols="30" pInputTextarea formControlName="txtComentario"  [(ngModel)]="requestGuardar.comentarioGerencia" ></textarea>
-
-                    <small
-                        *ngIf="bSubmited && formRegistro.controls['txtDescripcion'].invalid && formRegistro.controls['txtDescripcion'].touched"
-                        class="text-red-600">Ingrese Comentario.</small>
-                </div>
-
+                @if(bEditarDetalle){
+                    <div class="col-12 md:col-12">
+                        <label class="label-filter-text">Comentario</label>
+                        <textarea rows="6" cols="30" pInputTextarea formControlName="txtComentario"  [(ngModel)]="requestGuardar.comentarioGerencia" 
+                        [ngClass]="{'ng-invalid ng-dirty' : bSubmited && !requestGuardar.comentarioGerencia}"></textarea>
+    
+                        <small
+                            *ngIf="bSubmited &&  formRegistro.controls['txtDescripcion'].touched"
+                            class="text-red-600">Ingrese Comentario.</small>
+                    </div>
+                }
+              
             </div>
         </form>
 

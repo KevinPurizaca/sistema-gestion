@@ -18,3 +18,8 @@ export const Perfiles = {
     Perfil1:1,
     Perfil2:3
 }
+
+export const KeysLocalStorage ={
+    InfoUsuario:"usuarioSession",
+    Token:"accessToken"
+}

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CommonService } from '../../../core/services/common.service';
 import { environment } from '../../../../environments/environment';
+import { KeysLocalStorage } from '../../../core/config/options';
 
 
 @Component({
@@ -123,8 +124,8 @@ export class LoginComponent {
                 // };
 
                 // var encriptdado = this.Encryptar(JSON.stringify(request));
-                window.localStorage.setItem("usuarioSession", JSON.stringify(usuarioSession));
-                window.localStorage.setItem("accessToken", JSON.stringify(res.token));
+                window.localStorage.setItem(KeysLocalStorage.InfoUsuario, JSON.stringify(usuarioSession));
+                window.localStorage.setItem(KeysLocalStorage.Token, JSON.stringify(res.token));
                 this.loading =false;
                 this.bSubmited = false;
 

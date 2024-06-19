@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MSG_CRUD, PageEvent, Perfiles, ROWS_DEFAULT, ROWS_OPTIONS } from '../../../../core/config/options';
+import { KeysLocalStorage, MSG_CRUD, PageEvent, Perfiles, ROWS_DEFAULT, ROWS_OPTIONS } from '../../../../core/config/options';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { HttpCoreService } from '../../../../core/services/httpCore.service';
 import { ENDPOINTS } from '../../../../core/config/Endpoints';
@@ -75,6 +75,8 @@ export class ConsultaRegistrosComponent implements OnInit {
     usuarioRegistro: 0
   }
 
+  usuario_data:any;
+
   widthModal:string="";
   heigthModal:string="";
   tituloModal:string="";
@@ -104,6 +106,8 @@ export class ConsultaRegistrosComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData(this.request);
+
+    this.usuario_data = JSON.parse(window.localStorage.getItem(KeysLocalStorage.InfoUsuario) || "{}")
   }
 
 
@@ -130,32 +134,34 @@ export class ConsultaRegistrosComponent implements OnInit {
   guardarRegistro() {
 
     this.bSubmited = true;
+    
     for (let c in this.formRegistro.controls) {
       this.formRegistro.controls[c].markAsTouched();
     }
 
 
-    if(this.formRegistro.valid){
+    if(this.formRegistro.valid){//Validamos si el formulario es valido
       this.loadingRegistrar = true;
       const value = this.formRegistro.value;
-      if(this.bEditarDetalle  && value.txtComentario == ""){
+
+      if(this.bEditarDetalle  && value.txtComentario == ""){//Vaidamos si va a registrar el comentario
         this.commonService.HanddleWarningMessage(MSG_CRUD.MsgAgregarComentario);
         this.loadingRegistrar = false;
         return;
       }
+      
       this.requestGuardar.idCliente = value.cboCliente.id;
       this.requestGuardar.asunto = value.txtAsunto;
       this.requestGuardar.detalle = value.txtDescripcion;
-      this.requestGuardar.usuarioRegistro = 8829;
       
 
       this.httpCoreService.post(this.requestGuardar,ENDPOINTS.RegistrarSeguimiento).subscribe(res => {
         if(res.success){
-          this.request.pagina.page = 0;
+          this.request.pagina.page = 0;//Reseteamos el page
           this.commonService.HanddleInfoMessage(MSG_CRUD.MsgActualizadaRegistrada);
-          this.loadData(this.request);
-          this.loadingRegistrar = false;
-          this.bDialogRegistrarDetalle = false;
+          this.loadData(this.request);//Recargamos la lista
+          this.loadingRegistrar = false;//ocultamps el loading del boton enviar
+          this.bDialogRegistrarDetalle = false;//cerramos el modal
         }
       })
     }
@@ -171,13 +177,14 @@ export class ConsultaRegistrosComponent implements OnInit {
   }
 
   collapsedChange(event: any) {
-    this.isCollapsed = event;
+    this.isCollapsed = event;//para cuando se usa el componente panel
   }
 
   
 
   showModal(item: any, caso: string) {
     this.bSubmited =false;
+    this.loadingRegistrar = false;
 
     if (caso == "Registrar") {
       this.bEditarDetalle = false;
@@ -185,7 +192,7 @@ export class ConsultaRegistrosComponent implements OnInit {
       this.requestGuardar.idCliente = 0;
       this.requestGuardar.asunto ="";
       this.requestGuardar.detalle = "";
-      this.requestGuardar.usuarioRegistro = 0;
+      this.requestGuardar.usuarioRegistro = this.usuario_data.Id;//Toma el id del usuario guardado en el local storage
       this.requestGuardar.comentarioGerencia = "";
       this.selectedClientes = undefined;
 
@@ -232,7 +239,7 @@ export class ConsultaRegistrosComponent implements OnInit {
   }
 
   limpiar(){
-    this.formBusqueda.reset();
+    this.formBusqueda.reset();//Reseteamos el formulario
 
     const value = this.formBusqueda.value;
     this.request.asunto = value.txtAsunto || "";
@@ -250,26 +257,20 @@ export class ConsultaRegistrosComponent implements OnInit {
 
   //#region  AUTOCOMPLETABLES
 
-  filtrarClientesFiltro(event: AutoCompleteCompleteEvent) {
+
+  filtrarClientes(event: AutoCompleteCompleteEvent,caso:string) {
     const params = new URLSearchParams();
 
     if (event.query != "") params.append('Cliente',event.query);
   
       this.httpCoreService.get( `${ENDPOINTS.ObtenerClientes}${params.toString()}`).subscribe(res => {
         if(res.success){
-          this.lstClientesFiltro = res.body;        
-        }
-      })
-  }
-
-  filtrarClientes(event: AutoCompleteCompleteEvent) {
-    const params = new URLSearchParams();
-
-    if (event.query != "") params.append('Cliente',event.query);
-  
-      this.httpCoreService.get( `${ENDPOINTS.ObtenerClientes}${params.toString()}`).subscribe(res => {
-        if(res.success){
-          this.lstClientes = res.body;        
+          if(caso == "Filtros"){
+            this.lstClientes = res.body;        
+          }
+          else if(caso == "Registrar"){
+            this.lstClientesFiltro = res.body;        
+          }
         }
       })
   }

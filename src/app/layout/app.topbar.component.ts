@@ -3,6 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { AuthService } from '../components/auth/services/auth.service';
 import { Router } from '@angular/router';
+import { KeysLocalStorage } from '../core/config/options';
 
 @Component({
     selector: 'app-topbar',
@@ -25,7 +26,7 @@ export class AppTopBarComponent {
         private _authService: AuthService,    
         private router: Router,
     ) {
-        const userdata = JSON.parse(window.localStorage.getItem("usuarioSession") || "{}");
+        const userdata = JSON.parse(window.localStorage.getItem(KeysLocalStorage.InfoUsuario) || "{}");
 
         if (userdata) {
             this.userData = userdata;
