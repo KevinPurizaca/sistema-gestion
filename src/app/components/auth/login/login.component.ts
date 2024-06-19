@@ -15,6 +15,7 @@ import { environment } from '../../../../environments/environment';
 })
 
 export class LoginComponent {
+    bSubmited:boolean = false;
 
      siteKeyRecaptcha = environment.ClientKeyCaptcha;
 
@@ -76,6 +77,8 @@ export class LoginComponent {
 
     async login(event: Event) {
         event.preventDefault();
+        this.bSubmited = true;
+
         if (this.form.invalid) {
             for (const control of Object.keys(this.form.controls)) {
                 this.form.controls[control].markAsTouched();
@@ -123,6 +126,7 @@ export class LoginComponent {
                 window.localStorage.setItem("usuarioSession", JSON.stringify(usuarioSession));
                 window.localStorage.setItem("accessToken", JSON.stringify(res.token));
                 this.loading =false;
+                this.bSubmited = false;
 
                 this.router.navigateByUrl("/Registros/Consulta-Registros")
             } else {
@@ -130,6 +134,8 @@ export class LoginComponent {
                 this.IdCaptcha.reset();
             }
             this.isSubmitted = false;
+            this.loading =false;
+
         }, (error: any) => {
             this.IdCaptcha.reset();
             this.isSubmitted = false;

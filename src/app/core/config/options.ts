@@ -1,5 +1,5 @@
-export const ROWS_DEFAULT = 10;
-export const ROWS_OPTIONS = [10, 25, 50];
+export const ROWS_DEFAULT = 5;
+export const ROWS_OPTIONS = [5,10, 25, 50];
 
 export interface PageEvent {
     first: number | any;
@@ -10,12 +10,8 @@ export interface PageEvent {
 
 
 export const MSG_CRUD = {
-    MSG_ACTUALIZADA: 'Información Actualizada.',
-    MSG_REGISTRADA:  'Información Registrada.',
     MsgActualizadaRegistrada: 'Información Registrada o Actualizada.',
-    MSG_ELIMINADA:  'Información Eliminada.',
-    MSG_APROBADO:   'Información Aprobado.',
-    MSG_PREGUNTA_ELIMINAR:  '¿Desea eliminar el registro?' 
+    MsgAgregarComentario: 'Ingresar comentario',
 }
 
 export const Perfiles = {

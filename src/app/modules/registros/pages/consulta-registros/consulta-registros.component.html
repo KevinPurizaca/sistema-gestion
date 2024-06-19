@@ -49,10 +49,10 @@
                 <p-button label="Nuevo Registro" severity="help" icon="pi pi-plus" iconPos="right" (click)="showModal(null,'Registrar')" />
             </div>
             <div class="mb-3 mr-3">
-                <p-button label="Buscar" severity="primary" icon="pi pi-search" iconPos="right" [outlined]="true" />
+                <p-button label="Buscar" severity="primary" icon="pi pi-search" iconPos="right" [outlined]="true" (onClick)="buscarRegistro()"/>
             </div>
             <div class="">
-                <p-button label="Limpiar" severity="secondary" icon="pi pi-trash" iconPos="right" [outlined]="true" />
+                <p-button label="Limpiar" severity="secondary" icon="pi pi-trash" iconPos="right" [outlined]="true" (onClick)="limpiar()"/>
 
             </div>
         </div>
@@ -111,8 +111,8 @@
         [showCurrentPageReport]="true"  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"/>
 </p-card>
 
-<p-dialog header="Nuevo Registro" [modal]="true" [(visible)]="bDialogRegistrarDetalle"
-    [style]="{ width:'600px',height:'1000px' }" [closable]="true" [resizable]="true" [draggable]="false">
+<p-dialog [header]="tituloModal" [modal]="true" [(visible)]="bDialogRegistrarDetalle"
+    [style]="{ width:widthModal,height:heigthModal}" [closable]="true" [resizable]="true" [draggable]="false">
 
     <ng-template pTemplate="content">
         <form [formGroup]="formRegistro">
@@ -120,39 +120,40 @@
 
                 <div class="col-12 md:col-12">
                     <label class="label-filter-text">Cliente</label>
-                    <p-autoComplete [(ngModel)]="selectedClientes" [dropdown]="true" [suggestions]="lstClientes"
+                    <p-autoComplete [(ngModel)]="selectedClientes" [dropdown]="false" [suggestions]="lstClientes"
+                     [readonly]="bEditarDetalle" [disabled]="bEditarDetalle"
                         (completeMethod)="filtrarClientes($event)" minLength="1" field="cliente" appendTo="body"
-                        formControlName="cboCliente" placeholder="Seleccione Cliente" />
+                        formControlName="cboCliente" placeholder="Escribe y Seleccione Cliente" />
 
                     <small
-                        *ngIf="formRegistro.controls['cboCliente'].invalid && formRegistro.controls['cboCliente'].touched"
+                        *ngIf="bSubmited && formRegistro.controls['cboCliente'].invalid && formRegistro.controls['cboCliente'].touched"
                         class="text-red-600">Seleccione Cliente.</small>
                 </div>
 
                 <div class="col-12 md:col-12">
                     <label class="label-filter-text">Asunto</label>
-                    <input type="text" pInputText formControlName="txtAsunto" [(ngModel)]="requestGuardar.asunto"/>
+                    <input type="text" pInputText formControlName="txtAsunto" [(ngModel)]="requestGuardar.asunto" [readonly]="bEditarDetalle"/>
 
                     <small
-                        *ngIf="formRegistro.controls['txtAsunto'].invalid && formRegistro.controls['txtAsunto'].touched"
+                        *ngIf="bSubmited && formRegistro.controls['txtAsunto'].invalid && formRegistro.controls['txtAsunto'].touched"
                         class="text-red-600">Ingrese Asunto.</small>
                 </div>
 
                 <div class="col-12 md:col-12">
                     <label class="label-filter-text">Descripcion Detallada</label>
-                    <textarea rows="4" cols="30" pInputTextarea formControlName="txtDescripcion" [(ngModel)]="requestGuardar.detalle"></textarea>
+                    <textarea rows="5" cols="30" pInputTextarea formControlName="txtDescripcion" [(ngModel)]="requestGuardar.detalle" [readonly]="bEditarDetalle"></textarea>
 
                     <small
-                        *ngIf="formRegistro.controls['txtDescripcion'].invalid && formRegistro.controls['txtDescripcion'].touched"
+                        *ngIf="bSubmited && formRegistro.controls['txtDescripcion'].invalid && formRegistro.controls['txtDescripcion'].touched"
                         class="text-red-600">Ingrese Descripcion Detallada.</small>
                 </div>
 
                 <div class="col-12 md:col-12" *ngIf="bEditarDetalle">
                     <label class="label-filter-text">Comentario</label>
-                    <textarea rows="4" cols="30" pInputTextarea formControlName="txtComentario"  [(ngModel)]="requestGuardar.comentarioGerencia"></textarea>
+                    <textarea rows="6" cols="30" pInputTextarea formControlName="txtComentario"  [(ngModel)]="requestGuardar.comentarioGerencia" ></textarea>
 
                     <small
-                        *ngIf="formRegistro.controls['txtDescripcion'].invalid && formRegistro.controls['txtDescripcion'].touched"
+                        *ngIf="bSubmited && formRegistro.controls['txtDescripcion'].invalid && formRegistro.controls['txtDescripcion'].touched"
                         class="text-red-600">Ingrese Comentario.</small>
                 </div>
 

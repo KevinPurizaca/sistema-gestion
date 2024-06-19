@@ -21,6 +21,7 @@ export class ConsultaRegistrosComponent implements OnInit {
   isCollapsed: boolean = false;
   bDialogRegistrarDetalle: boolean = false;
   bEditarDetalle: boolean = false;
+  bSubmited: boolean = false;
 
   loading: boolean = true;
   loadingRegistrar: boolean = false;
@@ -58,6 +59,7 @@ export class ConsultaRegistrosComponent implements OnInit {
     idCliente: 0,
     codigo: "",
     asunto: "",
+    UsuarioRegistro:0,
     pagina: {
       page: 0,
       pageSize: ROWS_DEFAULT
@@ -73,6 +75,9 @@ export class ConsultaRegistrosComponent implements OnInit {
     usuarioRegistro: 0
   }
 
+  widthModal:string="";
+  heigthModal:string="";
+  tituloModal:string="";
 
   constructor(
     fb: FormBuilder,
@@ -124,6 +129,7 @@ export class ConsultaRegistrosComponent implements OnInit {
 
   guardarRegistro() {
 
+    this.bSubmited = true;
     for (let c in this.formRegistro.controls) {
       this.formRegistro.controls[c].markAsTouched();
     }
@@ -132,6 +138,11 @@ export class ConsultaRegistrosComponent implements OnInit {
     if(this.formRegistro.valid){
       this.loadingRegistrar = true;
       const value = this.formRegistro.value;
+      if(this.bEditarDetalle  && value.txtComentario == ""){
+        this.commonService.HanddleWarningMessage(MSG_CRUD.MsgAgregarComentario);
+        this.loadingRegistrar = false;
+        return;
+      }
       this.requestGuardar.idCliente = value.cboCliente.id;
       this.requestGuardar.asunto = value.txtAsunto;
       this.requestGuardar.detalle = value.txtDescripcion;
@@ -166,12 +177,28 @@ export class ConsultaRegistrosComponent implements OnInit {
   
 
   showModal(item: any, caso: string) {
+    this.bSubmited =false;
 
     if (caso == "Registrar") {
       this.bEditarDetalle = false;
+      this.requestGuardar.id = 0;
+      this.requestGuardar.idCliente = 0;
+      this.requestGuardar.asunto ="";
+      this.requestGuardar.detalle = "";
+      this.requestGuardar.usuarioRegistro = 0;
+      this.requestGuardar.comentarioGerencia = "";
+      this.selectedClientes = undefined;
+
+      this.widthModal ="600px";
+      this.heigthModal ="550px";
+      this.tituloModal ="Nuevo Registro";
+
       this.bDialogRegistrarDetalle = true;
+
     }
     else if (caso == "Ver-Detalle") {
+      this.bEditarDetalle = true;
+      this.requestGuardar.id = item.id;
       this.requestGuardar.idCliente = item.idCliente;
       this.requestGuardar.asunto =item.asunto;
       this.requestGuardar.detalle = item.detalle;
@@ -183,13 +210,43 @@ export class ConsultaRegistrosComponent implements OnInit {
           this.selectedClientes = res.body[0];        
         }
       })
+      this.widthModal ="600px";
+      this.heigthModal ="1000px";
+      this.tituloModal ="Agregar Comentario";
 
-      this.bEditarDetalle = true;
       this.bDialogRegistrarDetalle = true;
     }
   }
 
-  
+  buscarRegistro(){
+    const value = this.formBusqueda.value;
+    this.request.asunto = value.txtAsunto;
+    this.request.codigo = value.txtCodigo;
+    this.request.idCliente = value.cboCliente?.id || 0;
+    this.request.UsuarioRegistro = value.cboUsuario?.id|| 0;
+    this.request.pagina.page = 0;
+    this.request.pagina.pageSize = ROWS_DEFAULT;
+    this.first = 0;
+    this.rows = ROWS_DEFAULT;
+    this.loadData(this.request);
+  }
+
+  limpiar(){
+    this.formBusqueda.reset();
+
+    const value = this.formBusqueda.value;
+    this.request.asunto = value.txtAsunto || "";
+    this.request.codigo = value.txtCodigo || "";
+    this.request.idCliente =  0;
+    this.request.UsuarioRegistro =  0;
+    this.request.pagina.page = 0;
+    this.request.pagina.pageSize = ROWS_DEFAULT;
+    this.first = 0;
+    this.rows = ROWS_DEFAULT;
+
+    
+    this.loadData(this.request);
+  }
 
   //#region  AUTOCOMPLETABLES
 
