@@ -224,7 +224,10 @@ export class ConsultaRegistrosComponent implements OnInit {
       this.requestGuardar.usuarioRegistro = item.usuarioRegistro;
       this.requestGuardar.comentarioGerencia = item.comentarioGerencia;
 
-      this.visualizarSeguimiento(item.id);
+      if(this.bPerfilGerente){
+        this.visualizarSeguimiento(item.id);
+      }
+
       this.httpCoreService.get( `${ENDPOINTS.ObtenerClientes}Cliente=${item.cliente}`).subscribe(res => {
         if(res.success){
           this.selectedClientes = res.body[0];        
