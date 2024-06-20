@@ -78,7 +78,7 @@
         <ng-template pTemplate="body" let-data>
             <tr>
                 <td class="columna-carta">
-                    <p-button *ngIf="data.flgVisualizacion" icon="pi pi-envelope" [rounded]="false" [text]="true" [severity]="'warning'" />
+                    <p-button *ngIf="!data.flgVisualizacion" icon="pi pi-envelope" [rounded]="false" [text]="true" [severity]="'warning'" />
                 </td>
                 <td class="columna-codigo">{{ data.codigo }}</td>
                 <td class="columna-fecha">{{ data.fechaRegistro | date: 'dd/MM/YYYY' }}</td>

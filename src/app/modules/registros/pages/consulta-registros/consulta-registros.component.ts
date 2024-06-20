@@ -155,7 +155,7 @@ export class ConsultaRegistrosComponent implements OnInit {
       this.loadingRegistrar = true;
       const value = this.formRegistro.value;
 
-      if(this.bEditarDetalle  && value.txtComentario == ""){//Vaidamos si va a registrar el comentario
+      if(this.bEditarDetalle  && value.txtComentario == "" && this.bPerfilGerente){//Vaidamos si va a registrar el comentario
         this.commonService.HanddleWarningMessage(MSG_CRUD.MsgAgregarComentario);
         this.loadingRegistrar = false;
         return;
@@ -171,7 +171,6 @@ export class ConsultaRegistrosComponent implements OnInit {
       
       this.httpCoreService.post(this.requestGuardar,ENDPOINTS.RegistrarSeguimiento).subscribe(res => {
         if(res.success){
-          this.request.pagina.page = 0;//Reseteamos el page
           this.commonService.HanddleInfoMessage(MSG_CRUD.MsgActualizadaRegistrada);
           this.loadData(this.request);//Recargamos la lista
           this.loadingRegistrar = false;//ocultamps el loading del boton enviar
