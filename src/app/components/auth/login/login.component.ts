@@ -24,7 +24,7 @@ export class LoginComponent {
 
     loading: boolean = false;
 
-    @ViewChild('IdCaptcha') IdCaptcha: any;
+    // @ViewChild('IdCaptcha') IdCaptcha: any;
     isSubmitted: boolean = false;
     returnUrl: string = '/';
     error: boolean = false;
@@ -38,7 +38,7 @@ export class LoginComponent {
     form: FormGroup = this.fb.group({
         usuario: [, [Validators.required]],
         password: [, [Validators.required]],
-        recaptchaReactive: new FormControl(null, Validators.required),
+        recaptchaReactive: new FormControl(null),
         RequestVerificacionToken: [, null]
     })
 
@@ -141,13 +141,13 @@ export class LoginComponent {
 
             } else {
                 this.commonService.HanddleWarningMessage(res.Mensaje);
-                this.IdCaptcha.reset();
+                // this.IdCaptcha.reset();
             }
             this.isSubmitted = false;
             this.loading = false;
 
         }, (error: any) => {
-            this.IdCaptcha.reset();
+            // this.IdCaptcha.reset();
             this.isSubmitted = false;
             this.commonService.HanddleWarningMessage(error);
         });
