@@ -24,7 +24,7 @@ export class LoginComponent {
 
     loading: boolean = false;
 
-    // @ViewChild('IdCaptcha') IdCaptcha: any;
+    @ViewChild('IdCaptcha') IdCaptcha: any;
     isSubmitted: boolean = false;
     returnUrl: string = '/';
     error: boolean = false;
@@ -105,6 +105,9 @@ export class LoginComponent {
 
                 this.httpCoreService.get(ENDPOINTS.ObtenerPerfilUsuario + res.Id).subscribe(resPerfil => {
                     if (resPerfil.success) {
+
+                        window.localStorage.clear();
+
                         var usuarioSession = {
                             "Flagproveedor": res.Datos.Flagproveedor,
                             "Flagconfiguracionpersona": res.Datos.Flagconfiguracionpersona,
@@ -130,33 +133,30 @@ export class LoginComponent {
                         this.bSubmited = false;
 
                         this.router.navigateByUrl("/Registros/Consulta-Registros");
+
+                        // var request = {
+                        //     usuario: usuarioSession,
+                        //     token: res.token
+                        // };
+        
+                        // var encriptdado = this.Encryptar(JSON.stringify(request));
                     }
                 })
-                // var request = {
-                //     usuario: usuarioSession,
-                //     token: res.token
-                // };
-
-                // var encriptdado = this.Encryptar(JSON.stringify(request));
+            
 
             } else {
                 this.commonService.HanddleWarningMessage(res.Mensaje);
-                // this.IdCaptcha.reset();
+                this.IdCaptcha.reset();
             }
             this.isSubmitted = false;
             this.loading = false;
 
         }, (error: any) => {
-            // this.IdCaptcha.reset();
+            this.IdCaptcha.reset();
             this.isSubmitted = false;
             this.commonService.HanddleWarningMessage(error);
         });
     }
-
-    loadDataPerfilUsuario() {
-
-    }
-
 
 
     recuperarRedirect() {

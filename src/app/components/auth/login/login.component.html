@@ -32,17 +32,18 @@
             </div> 
   
           <div>
-            <!-- <re-captcha formControlName="recaptchaReactive" name="recaptcha" [(ngModel)]="tokenRecaptcha"
+            <re-captcha formControlName="recaptchaReactive" name="recaptcha" [(ngModel)]="tokenRecaptcha"
               (resolved)="resolved($event)"  #IdCaptcha [siteKey]="siteKeyRecaptcha"
               [class.is-invalid]="form.controls['recaptchaReactive'].invalid && (form.controls['recaptchaReactive'].dirty || form.controls['recaptchaReactive'].touched)">
-            </re-captcha> -->
+            </re-captcha>
             <div
               *ngIf="form.controls['recaptchaReactive'].invalid && (form.controls['recaptchaReactive'].dirty || form.controls['recaptchaReactive'].touched)">
 
-              <!-- <small *ngIf="bSubmited &&  form.controls['recaptchaReactive'].hasError('required')"
-              class="text-red-600">Este campo es obligatorio</small> -->
+              <small *ngIf="bSubmited &&  form.controls['recaptchaReactive'].hasError('required')"
+              class="text-red-600">Este campo es obligatorio</small>
             </div>
           </div>
+          
 
           <br>
           <p-button class="w-full" label="Ingresar" [raised]="true" severity="success" size="large" (click)="login($event)" [loading]="loading"/>

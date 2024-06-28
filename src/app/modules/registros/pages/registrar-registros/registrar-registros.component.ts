@@ -4,7 +4,7 @@ import { CommonService } from '../../../../core/services/common.service';
 import { HttpCoreService } from '../../../../core/services/httpCore.service';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { ENDPOINTS } from '../../../../core/config/Endpoints';
-import { MSG_CRUD } from '../../../../core/config/options';
+import { KeysLocalStorage, MSG_CRUD } from '../../../../core/config/options';
 import { Router } from '@angular/router';
 
 @Component({
@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 export class RegistrarRegistrosComponent {
   formRegistro: FormGroup;
   loadingRegistrar: boolean = false;
+  usuario_data:any;
 
   lstClientes: any[] = [];
   selectedClientes: any;
@@ -36,6 +37,8 @@ export class RegistrarRegistrosComponent {
     private commonService: CommonService,
     private router:Router
   ){
+    this.usuario_data = JSON.parse(window.localStorage.getItem(KeysLocalStorage.InfoUsuario) || "{}");
+
     this.formRegistro = fr.group({
       cboCliente: ['', [Validators.required]],
       txtAsunto: ['', [Validators.required]],
@@ -58,7 +61,7 @@ export class RegistrarRegistrosComponent {
       this.requestGuardar.idCliente = value.cboCliente.id;
       this.requestGuardar.asunto = value.txtAsunto;
       this.requestGuardar.detalle = value.txtDescripcion;
-      this.requestGuardar.usuarioRegistro = 8829;
+      this.requestGuardar.usuarioRegistro = this.usuario_data.Id;
       
 
       this.httpCoreService.post(this.requestGuardar,ENDPOINTS.RegistrarSeguimiento).subscribe(res => {

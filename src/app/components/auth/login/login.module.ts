@@ -8,8 +8,8 @@ import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 
-// import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaFormsModule } from 'ng-recaptcha';
-// import { environment } from '../../../../environments/environment';
+import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaFormsModule } from 'ng-recaptcha';
+import { environment } from '../../../../environments/environment';
 
 
 
@@ -25,8 +25,8 @@ import { ToastModule } from 'primeng/toast';
         PasswordModule,
         ToastModule,
 
-        // RecaptchaModule,
-        // RecaptchaFormsModule,
+        RecaptchaModule,
+        RecaptchaFormsModule,
     ],
     declarations: [LoginComponent]
 })
